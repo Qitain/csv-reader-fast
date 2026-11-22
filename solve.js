@@ -8,8 +8,17 @@
  */
 export function run(input) {
   const text = String(input.text);
-  const length = text.length;
   const header = input.header === true;
+  // Seed cold error/EOF feedback within this call; no results or input state
+  // survive between calls. This avoids recompiling a large scan at a rare tail.
+  const warmup = '\uFEFF\n\r\n"h"q,\ra\r\nx\nx,y,z\n\r\r\n"a""b\r\nc\rd\n"j\r,k\n"tail"';
+  parseText(warmup, true);
+  parseText(warmup + '"', false);
+  return parseText(text, header);
+}
+
+function parseText(text, header) {
+  const length = text.length;
   const rows = [];
   const errors = [];
   let columns = null;
