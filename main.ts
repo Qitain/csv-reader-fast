@@ -9,7 +9,7 @@ import { setFlagsFromString } from 'node:v8';
 
 // Tune before importing the parser: larger young-space growth and serial
 // scavenging/compilation reduce total child CPU, including runtime workers.
-setFlagsFromString('--no-incremental-marking --no-parallel-scavenge --semi-space-growth-factor=8 --no-concurrent-recompilation');
+setFlagsFromString('--no-incremental-marking --no-parallel-scavenge --semi-space-growth-factor=8 --no-concurrent-recompilation --no-turbofan');
 
 /** solve.js, imported by its URL (a .js module carries no types) and typed by its contract. */
 const { run } = (await import(new URL('./solve.js', import.meta.url).href)) as { run: (input: unknown) => unknown };
